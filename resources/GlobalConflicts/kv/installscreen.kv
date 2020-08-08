@@ -57,7 +57,7 @@
 
     NewsLabel:
         id: news_label
-
+        background_color: 0, 0, 0, 0.35
         size: 0, 400
         right: root.width - 20
         top: root.top - 20
@@ -67,7 +67,7 @@
     Image:
         source: app.resource_path('images/logo.png')
         x: root.width / 6 - self.width / 2
-        top: root.top - 5
+        top: root.top - (root.height * 0.05)
         size_hint: None, None
         size: root.width / 5, root.width / 5
         #size: 256, 256
