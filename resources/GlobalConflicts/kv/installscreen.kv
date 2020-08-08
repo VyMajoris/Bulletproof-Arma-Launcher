@@ -1,0 +1,222 @@
+# Section: Screen where install related stuff is
+
+#:import launcher_config launcher_config
+#:import get_color_from_hex kivy.utils.get_color_from_hex
+#:import Video kivy.uix.video
+
+<HoverButton>
+    border: 1,1,1,1
+    size_hint: None, None
+    width: 100
+    height: 75
+
+    # valign: 'middle'
+    # Don't ask my why! "valign: 'middle'" aligns too high!
+    # Workaround:
+    padding_y: (self.height - self.font_size) / 2 - self.height / 12
+
+    color: self.color_normal
+    background_color: self.bgcolor_normal
+
+    background_normal: ''
+    background_down: ''
+    background_hover: ''
+    background_disabled_normal: ''
+    background_disabled_down: ''
+
+    color_hover: 1, 1, 0.66, 1
+    color_normal: 1, 1, 1, 1
+
+    #disabled_color: 0.5, 0.5, 0.5, 0.333
+
+    bgcolor_normal: 0, 0, 0, 0
+    bgcolor_hover: 0, 0, 0, 0
+
+    font_name: app.resource_path("fonts/Myriad_Pro_Regular.ttf")
+    font_size: 32
+    on_release: app.play_sound('click')
+
+<HoverButtonLeft@HoverButton>:
+    text_size: self.size
+    width: 330
+    height: 32
+    bgcolor_normal: 0, 0, 0, 1
+    bgcolor_hover: 0.1, 0.1, 0.1, 1#get_color_from_hex('#21212680')
+
+<NewsLabel@RstDocument>
+    size_hint: (None, None)
+    colors: {'background': '000000c0', 'link': 'ce5c00ff', 'paragraph': 'eeeeeeff', 'title': 'ffffccff', 'bullet': 'ffffffff'}
+    underline_color: 'ffffccff'
+    base_font_size: 28
+
+# Section: Screen where install related stuff is
+<InstallScreen>:
+
+    padding: 20
+    name: 'install_screen'
+
+    NewsLabel:
+        id: news_label
+
+        size: 0, 400
+        right: root.width - 20
+        top: root.top - 20
+        width: 0
+        width_final: 305
+
+    Image:
+        source: app.resource_path('images/logo.png')
+        x: root.width / 6 - self.width / 2
+        top: root.top - 5
+        size_hint: None, None
+        size: root.width / 5, root.width / 5
+        #size: 256, 256
+
+    #Video:
+        ##source: app.resource_path('data/video.ogv')
+        #source: app.resource_path('data/video.mp4')
+        #size: 256, 256
+        #x: root.width / 2 - self.width / 2
+        #y: root.height / 2 - self.height / 2
+        #state: 'play'
+        #options: { 'allow_stretch': True, 'eos': 'loop' }
+
+    BoxLayout:
+        padding: 20
+        orientation: 'vertical'
+
+        Label:
+            id: filler
+
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint_y: None
+
+            StatusImage:
+                id: status_image
+                source_map: { 'default': app.resource_path('images/loader.zip'), 'attention': app.resource_path('images/achtung40x38.png') }
+                anim_delay: 0.05
+                size: 20, 20
+                size_hint: None, None
+                hidden: True
+
+            BoxLayout:
+                orientation: 'vertical'
+                padding: 10, 0
+
+                Label:
+                    id: status_label
+                    size_hint: None, None
+                    text_size: self.parent.width - self.parent.padding[0] - self.parent.padding[2], None
+                    size: self.texture_size
+
+                Label:
+                    id: status_box
+                    size_hint: None, None
+                    text_size: self.parent.width - self.parent.padding[0] - self.parent.padding[2], None
+                    size: self.texture_size
+
+        Widget:
+            height: 10
+            size_hint_y: None
+
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint_y: None
+            height: 30
+            spacing: 10
+
+            ProgressBar:
+                id: progress_bar
+                value: 0
+        Widget:
+            height: 20
+            size_hint_y: None
+
+        BoxLayout:
+            id: boxes_menu
+            orientation: 'horizontal'
+            height: 75
+            size_hint_y: None
+
+            # DiscordButton
+            HoverButton:
+                text: 'DISCORD'
+                size_hint_x: 1
+                on_release: app.open_hyperlink(launcher_config.discord_url)
+
+            HoverButton:
+                text: 'WEBSITE'
+                size_hint_x: 1
+                on_release: app.open_hyperlink(launcher_config.forum_url)
+
+            Widget:
+                size_hint_x: 1
+
+            # MakeTorrentButton
+            HoverButton:
+                disabled: True
+                size_hint_x: 1
+                id: make_torrent
+                on_release: root.controller.on_make_torrent_button_release(self)
+
+            HoverButton:
+                text: 'WIKI'
+                size_hint_x: 1
+                on_release: app.open_hyperlink(launcher_config.wiki_url)
+
+            # OptionsButton
+            HoverButton:
+                id: options_button
+                size_hint_x: 1
+                on_release: app.root.ids.main_screen_manager.current = 'pref_screen'
+                text: 'OPTIONS'
+                disabled: True
+
+        BoxLayout:
+            size_hint_y: None
+            height: 30
+            Label:
+                id: footer_label
+                orientation: 'horizontal'
+                font_name: app.resource_path("fonts/Myriad_Pro_Regular.ttf")
+                font_size: 12
+                text_size: self.width, self.height
+                halign: 'right'
+                valign: 'bottom'
+                text: 'Build: N/A'
+
+    # Install/Play button
+    DynamicButton:
+        id: action_button
+        # on_release callbacks are bound in installscreen.py
+        font_size: 60
+        y: 50
+        x: root.width / 2 - self.width / 2
+        size: self.texture_size[0], boxes_menu.height
+
+    HoverButton:
+        id: selected_server
+        size: self.texture_size
+        size_hint: None, None
+        font_size: 16
+        on_release: root.controller.on_selected_server_button_release(self)
+        text_prefix: '[size=17][font=fonts/Equality]=[/font][/size]'
+        text: server_list_scrolled.text if server_list_scrolled.text else 'SERVER SELECTION'
+        markup: True
+        disabled: True
+        padding: 0, 10
+        text_size: None, 30
+        x: root.width / 2 - self.width / 2
+        y: 11
+
+    ServerListScrolled:
+        id: server_list_scrolled
+        x: (root.width - self.width) / 2
+        y: selected_server.top + 10
+        width: 330
+
+        unfolded_height: root.top - 20 - self.y
+        folded_height: 0
+        selection_callback: root.controller.set_selected_server
+        spacing: 0

@@ -1,0 +1,20 @@
+from __future__ import unicode_literals
+
+launcher_name = 'Global Conflicts Launcher'
+default_mods_dir = 'Global Conflicts Mods'
+icon = 'icons/GC.ico'
+original_url = 'https://github.com/overfl0/Bulletproof-Arma-Launcher/releases/latest'
+executable_name = 'GC_Launcher'
+forum_url = 'http://www.globalconflicts.net/'
+wiki_url = 'http://www.globalconflicts.net/wiki/'
+discord_url = 'https://discord.gg/jZNCc8r'
+domain = 'globalconflicts.net'
+metadata_path = '/launcher/metadata.json'
+torrents_path = '/launcher/torrents'
+troubleshooting_url = 'https://github.com/overfl0/Bulletproof-Arma-Launcher/wiki/Troubleshooting'
+bugtracker_url = 'https://github.com/overfl0/Bulletproof-Arma-Launcher/issues'
+settings_directory = 'Global Conflicts Launcher'
+news_url = 'http://www.globalconflicts.net/launcher/news.md'
+dominant_color = '#2FA7D4CC'
+donate_url = 'https://paypal.me/pools/c/8rkzDYJgYB'
+capitalize_status = False

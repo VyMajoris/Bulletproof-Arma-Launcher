@@ -1,0 +1,55 @@
+# Section: Screen for settings and configuration
+
+#:include kv/options_mods.kv
+#:include kv/options_arma.kv
+
+<PrefScreen>:
+    name: 'pref_screen'
+
+    LabelB:
+        bcolor: 0, 0, 0, 0.7
+        pos: 0, 143
+
+    MenuLayout:
+        Widget
+        BackButton:
+
+    TabbedPanel:
+        id: options_tabbed_panel
+        do_default_tab: False
+        height: 500
+        size_hint: 1, None
+        top: root.top - 22
+        tab_height: 40
+        tab_width: 200
+        background_color: 0, 0, 0, 0.3
+
+
+        TabbedPanelItem:
+            text: 'Downloading and mods'
+
+            ModsBox:
+                screen: root
+                id: mods_options
+
+        TabbedPanelItem:
+            text: 'Launch parameters'
+
+            ArmaOptionsBox:
+                screen: root
+                id: arma_options
+                height: options_tabbed_panel.height - options_tabbed_panel.tab_height
+
+    Label:
+        # Please do not remove this message. We worked hard to bring you this program.
+        # Remember the code is GPLv3 and you have to give credit where due.
+        text: '[i]This launcher is based on the Bulletproof Arma Launcher by Stack (aka overfl0) and Sighter\nSee: https://github.com/overfl0/Bulletproof-Arma-Launcher for more details[/i]'
+        color: 0.5, 0.5, 0.5, 0.7
+        x: root.width / 2 - self.width / 2
+        y: 5
+        halign: 'center'
+        size: self.texture_size
+        size_hint: None, None
+        markup: True
+        font_size: 10
+        outline_width: 1

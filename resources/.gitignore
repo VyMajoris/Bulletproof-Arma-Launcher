@@ -3,5 +3,7 @@
 !frontline/*
 !tacbf/
 !tacbf/*
+!GlobalConflicts/
+!GlobalConflicts/*
 
 *.pyc
