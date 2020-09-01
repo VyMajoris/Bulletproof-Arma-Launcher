@@ -24,8 +24,29 @@ from view.filechooser import FileChooser
 from view.errorpopup import ErrorPopup
 
 
-class CheckLabel(BoxLayout):
+class SmallCheckLabel(BoxLayout):
+    settings_name = StringProperty(None)
 
+    def __init__(self, entries=None, on_manual_path=None, **kwargs):
+        self.settings = kivy.app.App.get_running_app().settings
+        super(SmallCheckLabel, self).__init__(**kwargs)
+
+        self.bind(settings_name=self.set_settings_name)
+
+    def set_settings_name(self, instance, value):
+        if not value:
+            return
+
+        self.ids.checkbox.active = bool(self.settings.get(value))
+
+    def save_settings(self, instance, value):
+        if not self.settings_name:
+            return
+
+        self.settings.set(self.settings_name, value)
+
+
+class CheckLabel(BoxLayout):
     settings_name = StringProperty(None)
 
     def __init__(self, entries=None, on_manual_path=None, **kwargs):
@@ -48,7 +69,6 @@ class CheckLabel(BoxLayout):
 
 
 class CheckStringLabel(BoxLayout):
-
     settings_name = StringProperty(None)
 
     def __init__(self, entries=None, on_manual_path=None, **kwargs):
@@ -75,7 +95,6 @@ class CheckStringLabel(BoxLayout):
 
 
 class StringLabel(BoxLayout):
-
     settings_name = StringProperty(None)
     field_value = StringProperty(None)
 
@@ -101,7 +120,6 @@ class StringLabel(BoxLayout):
 
 
 class CheckDropdownLabel(BoxLayout):
-
     settings_name = StringProperty(None)
 
     def __init__(self, entries=None, on_manual_path=None, **kwargs):
@@ -129,7 +147,6 @@ class CheckDropdownLabel(BoxLayout):
 
 
 class CheckFileLabel(BoxLayout):
-
     settings_name = StringProperty(None)
 
     def __init__(self, entries=None, on_manual_path=None, **kwargs):
@@ -192,7 +209,8 @@ class Devmode_options(GridLayout):
                 mods = self.mod_manager.get_mods(include_base=True, include_server=True, include_all_servers=True)
 
         except KeyError:
-            ErrorPopup(message='The server data is probably still being fetched. Wait a few seconds and retry.').chain_open()
+            ErrorPopup(
+                message='The server data is probably still being fetched. Wait a few seconds and retry.').chain_open()
             return
 
         details = '\n'.join(mod.torrent_url for mod in mods)
@@ -202,7 +220,6 @@ class Devmode_options(GridLayout):
             message = 'The torrent URLs have been copied to your clipboard. Press Ctrl+V to paste them.'
         else:
             message = 'No mods meeting the criteria were found.'
-
 
         ErrorPopup(details=details, message=message, title=title, size=(900, 400)).chain_open()
 
