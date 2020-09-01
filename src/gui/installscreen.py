@@ -49,6 +49,7 @@ class InstallScreen(Screen):
     """
     View Class
     """
+
     def __init__(self, **kwargs):
         super(InstallScreen, self).__init__(**kwargs)
         self.controller = Controller(self)
@@ -135,7 +136,6 @@ class Controller(object):
 
         Clock.schedule_interval(self.seeding_and_action_button_upkeep, 1)
         self.watchdog_reschedule(self.settings.get('mod_data_cache'))
-
 
     def is_para_running(self, name=None, not_name=None):
         """Check if a given para is now running or if any para is running in
@@ -274,7 +274,7 @@ class Controller(object):
 
         # Check if seeding needs to stop
         if seeding_type == 'never' or \
-           (seeding_type == 'while_not_playing' and arma_is_running):
+                (seeding_type == 'while_not_playing' and arma_is_running):
 
             if self.is_para_running('sync'):
                 Logger.info('Timer check: stopping seeding.')
@@ -287,14 +287,14 @@ class Controller(object):
         # Check if seeding needs to start
         elif seeding_type == 'always' or \
                 (seeding_type == 'while_not_playing' and not arma_is_running):
-                    # Don't start if no mods, syncing failed or if it's already running
-                    if not self.para and self.mod_manager.get_mods(only_selected=True) and not self.syncing_failed:
-                        Logger.info('Timer check: starting seeding.')
-                        self.start_syncing(seed=True)
+            # Don't start if no mods, syncing failed or if it's already running
+            if not self.para and self.mod_manager.get_mods(only_selected=True) and not self.syncing_failed:
+                Logger.info('Timer check: starting seeding.')
+                self.start_syncing(seed=True)
 
-                        # Disable preferences screen mods_list
-                        Logger.info('upkeep: Disabling mods list in preferences')
-                        self.disable_settings_mods_list()
+                # Disable preferences screen mods_list
+                Logger.info('upkeep: Disabling mods list in preferences')
+                self.disable_settings_mods_list()
 
         if not arma_is_running:
             # Allow the game to be run once again by enabling the play button.
@@ -306,7 +306,6 @@ class Controller(object):
             # The BI launcher instead of Arma 3. Who knows why...
             if not hasattr(self, 'arma3_launcher_workaround_show_once'):
                 if utils.system_processes.program_running('arma3launcher.exe'):
-
                     self.arma3_launcher_workaround_show_once = True
                     message = textwrap.dedent('''
                         Uh, oh! Something went wrong!
@@ -322,8 +321,8 @@ class Controller(object):
 
     def update_footer_label(self, dt):
         git_sha1 = get_git_sha1_auto()
-        footer_text = 'Version: {}\nBuild: {}'.format(self.version,
-                                                      git_sha1[:7] if git_sha1 else 'N/A')
+        footer_text = 'Version: {} | Build: {}'.format(self.version,
+                                                       git_sha1[:7] if git_sha1 else 'N/A')
         self.view.ids.footer_label.text = footer_text.upper()
 
     def enable_updated_settings_mods_list(self):
@@ -345,7 +344,6 @@ class Controller(object):
             if self.view.ids.server_list_scrolled.max_height != folded_height:
                 anim = Animation(max_height=folded_height, t='out_circ', duration=0.5)
                 anim.start(self.view.ids.server_list_scrolled)
-
 
     def enable_action_buttons(self):
         if not self.view.ids.action_button.disabled:
@@ -389,13 +387,15 @@ class Controller(object):
         if is_pyinstaller_bundle() and launcher and autoupdater.should_update(
                 u_from=self.version, u_to=launcher.version):
 
-            launcher_executable = os.path.join(launcher.parent_location, launcher.foldername, '{}.exe'.format(launcher_config.executable_name))
+            launcher_executable = os.path.join(launcher.parent_location, launcher.foldername,
+                                               '{}.exe'.format(launcher_config.executable_name))
             same_files = autoupdater.compare_if_same_files(launcher_executable)
 
             # Safety check
             if launcher.is_complete() and same_files:
-                Logger.error('Metadata says there is a newer version {} than our version {} but the files are the same. Aborting upgrade request.'
-                             .format(launcher.version, self.version))
+                Logger.error(
+                    'Metadata says there is a newer version {} than our version {} but the files are the same. Aborting upgrade request.'
+                    .format(launcher.version, self.version))
 
             else:
                 # switch to play button and a different handler
@@ -497,6 +497,10 @@ class Controller(object):
         self.set_selected_server_message(server_name)
         self.restart_checking_mods()
 
+    def toggle_teamspeak_launch_and_connect(self, what):
+        print("TEAMSPEAK CLICKED")
+        pass
+
     def on_selected_server_button_release(self, btn):
         """Allow the user to select optional ways to play the game."""
 
@@ -555,7 +559,7 @@ class Controller(object):
                                                     on_manual_path=self.on_mod_set_path,
                                                     mods=mods,
                                                     all_existing_mods=all_existing_mods
-                                                   )
+                                                    )
                 message_box_instance.chain_open()
 
             elif command == 'mod_found_action':
@@ -618,7 +622,8 @@ class Controller(object):
             Logger.info("sending termination to para action {}".format(self.para.action_name))
 
         launcher = self.mod_manager.get_launcher()
-        executable = os.path.join(launcher.parent_location, launcher.foldername, '{}.exe'.format(launcher_config.executable_name))
+        executable = os.path.join(launcher.parent_location, launcher.foldername,
+                                  '{}.exe'.format(launcher_config.executable_name))
         autoupdater.request_my_update(executable)
         kivy.app.App.get_running_app().stop()
 
@@ -846,12 +851,12 @@ class Controller(object):
         # Automatic launching of scheduled one-time actions
         if self.action_button_enabled():
             if self.get_action_button_state() == DynamicButtonStates.install and \
-                self.settings.get('automatic_download') or self.settings.get('automatic_seed'):
-                    self.on_install_button_click(None)
+                    self.settings.get('automatic_download') or self.settings.get('automatic_seed'):
+                self.on_install_button_click(None)
 
             elif self.get_action_button_state() == DynamicButtonStates.play and \
-                self.settings.get('automatic_seed'):
-                    self.on_install_button_click(None)
+                    self.settings.get('automatic_seed'):
+                self.on_install_button_click(None)
 
         else:
             # Safety check
@@ -901,7 +906,8 @@ class Controller(object):
         Feel free to refactor me :).
         """
         if self.is_para_running('prepare_all'):
-            Logger.info('InstallScreen: User has made a decision about mod {}. Passing it to the subprocess.'.format(mod_name))
+            Logger.info(
+                'InstallScreen: User has made a decision about mod {}. Passing it to the subprocess.'.format(mod_name))
             Logger.debug('InstallScreen: Mod: {}, Location: {}, Action: {}'.format(mod_name, location, action))
 
             params = {
