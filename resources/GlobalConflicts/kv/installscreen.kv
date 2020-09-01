@@ -173,17 +173,31 @@
                 text: 'OPTIONS'
                 disabled: True
 
-        BoxLayout:
+        FloatLayout:
             size_hint_y: None
             height: 30
+
+            SmallCheckLabel:
+                pos_hint:{"right":1,"top":.8}
+                text: 'Launch and connect Teamspeak'
+                settings_name: 'launch_connect_teamspeak'
+
+
+            SmallCheckLabel:
+                pos_hint:{"right":1,"top":0}
+                text: 'Connect to the selected game server on launch'
+                settings_name: 'connect_to_server_on_launch'
+
+
             Label:
                 id: footer_label
                 orientation: 'horizontal'
+                pos_hint:{"left":1,"top":.5}
                 font_name: app.resource_path("fonts/Myriad_Pro_Regular.ttf")
                 font_size: 12
-                text_size: self.width, self.height
+                text_size: self.size
                 halign: 'right'
-                valign: 'bottom'
+                valign: 'center'
                 text: 'Build: N/A'
 
     # Install/Play button

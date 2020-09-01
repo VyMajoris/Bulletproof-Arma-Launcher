@@ -370,14 +370,19 @@ def run_the_game(mods, ip=None, port=None, password=None, teamspeak_urls=None, b
         mod_full_path = os.path.join(mod_dir, mod.foldername)
         mods_paths.append(mod_full_path)
 
-    # Running all the programs
-    ts_run_on_start = devmode.get_ts_run_on_start(default=True)
-    if ts_run_on_start:
-        if teamspeak_urls:
-            if isinstance(teamspeak_urls, basestring):
-                teamspeak.run_and_connect([teamspeak_urls])
-            else:
-                teamspeak.run_and_connect(teamspeak_urls)
+    if not settings.get('connect_to_server_on_launch'):
+        ip = None
+        port = None
+        password = None
+
+    if settings.get('launch_connect_teamspeak'):
+        ts_run_on_start = devmode.get_ts_run_on_start(default=True)
+        if ts_run_on_start:
+            if teamspeak_urls:
+                if isinstance(teamspeak_urls, basestring):
+                    teamspeak.run_and_connect([teamspeak_urls])
+                else:
+                    teamspeak.run_and_connect(teamspeak_urls)
     else:
         Logger.info('Third party: Not running teamspeak because of devmode settings.')
 
