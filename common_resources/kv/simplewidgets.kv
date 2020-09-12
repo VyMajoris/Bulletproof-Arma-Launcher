@@ -1,3 +1,22 @@
+<SmallCheckLabel@BoxLayout>:
+    text: ''
+    spacing: 7
+    orientation: 'horizontal'
+    height: 15
+    size_hint: 1, None
+
+    CheckBox:
+        id: checkbox
+        size_hint: None, None
+        size: 15, 15
+        pos_hint: {'center_y': 0.5}
+        on_active: root.save_settings(*args)
+
+    Label:
+        text: root.text
+        text_size: self.width, None
+        font_size:12
+
 <CheckLabel@BoxLayout>:
     text: ''
     spacing: 10

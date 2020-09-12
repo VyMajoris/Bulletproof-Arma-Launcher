@@ -80,6 +80,8 @@ class Settings(Model):
         {'name': 'selected_server', 'defaultValue': False},
         {'name': 'run_trackir', 'defaultValue': True},
         {'name': 'run_opentrack', 'defaultValue': True},
+        {'name': 'launch_connect_teamspeak', 'defaultValue': True},
+        {'name': 'connect_to_server_on_launch', 'defaultValue': True},
         {'name': 'run_facetracknoir', 'defaultValue': True},
         {'name': 'selected_optional_mods', 'defaultValue': []},
         {'name': 'last_custom_background', 'defaultValue': None},
