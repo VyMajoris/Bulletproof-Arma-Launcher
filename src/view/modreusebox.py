@@ -57,14 +57,14 @@ class ModReuseBox(ChainedPopup):
         # Buttons
         horizontal_box = BoxLayout(orientation='horizontal', spacing=50, width=300)
 
-        button1_bubble = textwrap.dedent('''\
-            Use that mod directly (fastest, takes almost
-            no additional space [color=ff3333]but may modify the
-            original mod on your disk while synchronizing[/color]).''')
-        button1 = DefaultHoverButton(text='Use that mod', size=(100, 30), bubble_text=button1_bubble)
-        button1.bind(on_release=self.dismiss)
-        button1.bind(on_release=lambda x: on_selection(mod_name, dropdown_box.text, 'use'))
-        horizontal_box.add_widget(button1)
+        # button1_bubble = textwrap.dedent('''\
+        #     Use that mod directly (fastest, takes almost
+        #     no additional space [color=ff3333]but may modify the
+        #     original mod on your disk while synchronizing[/color]).''')
+        # button1 = DefaultHoverButton(text='Use that mod', size=(100, 30), bubble_text=button1_bubble)
+        # button1.bind(on_release=self.dismiss)
+        # button1.bind(on_release=lambda x: on_selection(mod_name, dropdown_box.text, 'use'))
+        # horizontal_box.add_widget(button1)
 
         button2_bubble = textwrap.dedent('''\
             Create a local copy of the mod and only download
