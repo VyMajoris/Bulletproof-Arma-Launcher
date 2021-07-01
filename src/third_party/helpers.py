@@ -29,6 +29,7 @@ from utils import unicode_helpers
 from utils import exe_version_checker
 from utils.devmode import devmode
 from view.messagebox import MessageBox
+from view.errorpopup import ErrorPopup, DEFAULT_ERROR_MESSAGE
 
 
 def cancel_dismiss(instance):
@@ -294,7 +295,6 @@ def check_requirements(verbose=True):
 
             return False
 
-
     return True
 
 
@@ -307,6 +307,9 @@ def create_game_parameters():
 
     if settings.get('arma_win32'):
         args.append('-win32')
+
+    if settings.get('arma_use_cdlcs'):
+        pass
 
     if settings.get('arma_name') and settings.get('arma_name_enabled'):
         args.append('-name=' + settings.get('arma_name'))
@@ -340,6 +343,7 @@ def create_game_parameters():
 
     return args
 
+
 def get_mission_file_parameter():
     """Return an existing mission path file selected in the settings."""
 
@@ -354,12 +358,14 @@ def get_mission_file_parameter():
     return None
 
 
-def run_the_game(mods, ip=None, port=None, password=None, teamspeak_urls=None, battleye=True):
+def run_the_game(mods, ip=None, port=None, password=None, teamspeak_urls=None, battleye=True, cdlcs=None):
     """Run the game with the right parameters.
     Handle the exceptions by showing an appropriate message on error.
     """
 
     # Gathering data
+    if cdlcs is None:
+        cdlcs = []
     settings = kivy.app.App.get_running_app().settings
     custom_args = create_game_parameters()
     mission_file = get_mission_file_parameter()
@@ -369,6 +375,33 @@ def run_the_game(mods, ip=None, port=None, password=None, teamspeak_urls=None, b
     for mod in mods:
         mod_full_path = os.path.join(mod_dir, mod.foldername)
         mods_paths.append(mod_full_path)
+
+    if settings.get('arma_use_cdlcs'):
+
+        # check if user owns the CDLC by checking for the CDLC folder.
+        # if he does  not owns it, check for the compatibility data addon in the workshop folder.
+
+        error_message = "You must at least have the compatibility addons subscribed on Steam Workshop:\n"
+        has_error = False
+        for cdlc in cdlcs:
+            cdlc_path = os.path.join(Arma.get_installation_path(), cdlc['name'])
+            owns_cdlc = os.path.exists(os.path.join(Arma.get_installation_path(), cdlc_path))
+            if not owns_cdlc:
+                workshop = os.path.join(Arma.get_installation_path(), "!workshop")
+                cdlc_path = os.path.join(workshop, cdlc['compat_addon_name'])
+                have_compat_addon = os.path.exists(cdlc_path)
+                if not have_compat_addon:
+                    error_message += "\n" + "[u][color=3399ff][ref={}]{}[/ref][/color][/u]".format(
+                        cdlc['compat_addon_url'], cdlc['compat_addon_name'])
+                    has_error = True
+                else:
+                    mods_paths.insert(0, cdlc_path)
+            else:
+                mods_paths.insert(0, cdlc_path)
+
+        if has_error:
+            ErrorPopup(message=error_message).chain_open()
+            return
 
     if not settings.get('connect_to_server_on_launch'):
         ip = None
@@ -443,6 +476,7 @@ def run_the_game(mods, ip=None, port=None, password=None, teamspeak_urls=None, b
         error_info.chain_open()
 
     arma_may_be_running(newly_launched=True)
+
 
 ARMA_PROCESS_EVER_SEEN = False
 ARMA_PROCESS_TERMINATED = True

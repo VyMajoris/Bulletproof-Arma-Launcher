@@ -89,6 +89,7 @@ class Settings(Model):
         {'name': 'auth_password', 'defaultValue': ''},
 
         # Arma launching parameters ############################################
+        {'name': 'arma_use_cdlcs', 'defaultValue': True},
         {'name': 'arma_win32', 'defaultValue': False},
         {'name': 'arma_win64', 'defaultValue': False},
         {'name': 'arma_name', 'defaultValue': ''},

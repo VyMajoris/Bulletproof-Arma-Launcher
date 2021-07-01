@@ -144,6 +144,7 @@ class ModManager(object):
             third_party.helpers.run_the_game(mods,
                                              ip=server.ip,
                                              port=server.port,
+                                             cdlcs=server.cdlcs,
                                              password=server.password,
                                              teamspeak_urls=teamspeak,
                                              battleye=battleye)

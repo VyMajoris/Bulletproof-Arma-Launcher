@@ -16,7 +16,7 @@ from __future__ import unicode_literals
 class Server(object):
     """Encapsulate data needed for a server"""
 
-    def __init__(self, name, ip, port, password=None, teamspeak=None,
+    def __init__(self, name, ip, port, password=None, cdlcs=None, teamspeak=None,
                  battleye=True, background=None):
 
         super(Server, self).__init__()
@@ -30,6 +30,7 @@ class Server(object):
         self.mods = []
         self.selected = False
         self.background = background
+        self.cdlcs = cdlcs
 
     def add_mods(self, mods):
         """Add mods to a server.
@@ -60,8 +61,10 @@ class Server(object):
         teamspeak = d.get('teamspeak', None)
         battleye = d.get('battleye', True)
         background = d.get('background')
+        cdlcs = d.get('cdlcs', [])
 
         server = Server(name=name, ip=ip, port=port, password=password,
+                        cdlcs=cdlcs,
                         teamspeak=teamspeak, battleye=battleye, background=background)
 
         return server
