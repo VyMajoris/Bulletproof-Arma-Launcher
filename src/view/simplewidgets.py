@@ -146,6 +146,30 @@ class CheckDropdownLabel(BoxLayout):
         self.settings.set(self.settings_name, self.ids.dropdown.text)
 
 
+class DropdownLabel(BoxLayout):
+    settings_name = StringProperty(None)
+
+    def __init__(self, entries=None, on_manual_path=None, **kwargs):
+        self.settings = kivy.app.App.get_running_app().settings
+        super(DropdownLabel, self).__init__(**kwargs)
+
+        self.bind(settings_name=self.set_settings_name)
+
+    def set_settings_name(self, instance, value):
+        if not value:
+            return
+
+        settings_value = self.settings.get(value)
+        self.ids.dropdown.default = settings_value
+        # self.ids.dropdown.text = settings_value
+
+    def save_settings(self, instance, value):
+        if not self.settings_name:
+            return
+
+        self.settings.set(self.settings_name, self.ids.dropdown.text)
+
+
 class CheckFileLabel(BoxLayout):
     settings_name = StringProperty(None)
 

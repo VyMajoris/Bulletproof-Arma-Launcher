@@ -28,24 +28,6 @@
 
             # ==================================================================
             Label:
-                text: 'Non-Arma options:'
-                size_hint: None, None
-                size: self.texture_size[0], 30
-
-            CheckLabel:
-                text: 'Run TrackIR at game start (if installed)'
-                settings_name: 'run_trackir'
-
-            CheckLabel:
-                text: 'Run Opentrack at game start (if installed)'
-                settings_name: 'run_opentrack'
-
-            CheckLabel:
-                text: 'Run FreeTrackNoIR at game start (if installed)'
-                settings_name: 'run_facetracknoir'
-
-            # ==================================================================
-            Label:
                 text: 'Basic options:'
                 size_hint: None, None
                 size: self.texture_size[0], 50
@@ -59,19 +41,21 @@
                 text: 'Arma 3 Unit (ID number)'
                 settings_name: 'arma_unit'
 
-            CheckLabel:
-                text: 'Force 32-bit Arma executable (usually auto-detected!)'
-                settings_name: 'arma_win32'
-
-            CheckLabel:
-                text: 'Force 64-bit Arma executable (usually auto-detected!)'
-                settings_name: 'arma_win64'
-
             # ==================================================================
             Label:
                 text: 'Advanced options:'
                 size_hint: None, None
                 size: self.texture_size[0], 50
+                
+            DropdownLabel:
+                text: 'ArmA executable mode:'
+                settings_name: 'arma_execMode'
+                values: ['Auto Detect', '64bit', '32bit']
+                
+            DropdownLabel:
+                text: 'Memory Allocator'
+                settings_name: 'arma_allocator'
+                values: ['Auto', 'tbb4malloc_bi', 'jemalloc_bi', 'system']
 
             CheckLabel:
                 text: 'Show script errors'
@@ -80,6 +64,14 @@
             CheckLabel:
                 text: 'No pause'
                 settings_name: 'arma_noPause'
+            
+            CheckLabel:
+                text: 'No Logs'
+                settings_name: 'arma_noLogs'
+                
+            CheckLabel:
+                text: 'Enable Hyper-Threading'
+                settings_name: 'arma_enableHT'
 
             CheckLabel:
                 text: 'Force window mode'
@@ -93,6 +85,22 @@
             CheckLabel:
                 text: 'Huge pages'
                 settings_name: 'arma_hugePages'
+                
+            CheckStringLabel:
+                text: 'Additional parameters'
+                hint_text: '<separated by space>'
+                settings_name: 'arma_additionalParameters'
+
+            # ==================================================================
+            Label:
+                text: 'Non-Arma options:'
+                size_hint: None, None
+                size: self.texture_size[0], 50
+                
+            CheckDropdownLabel:
+                text: 'Run Track Program'
+                settings_name: 'arma_trackProgram'
+                values: ['TrackIR', 'Opentrack', 'FreeTrackNoIR']
 
             # ==================================================================
             Label:
@@ -141,10 +149,6 @@
         text: 'No sound'
         settings_name: 'arma_noSound'
 
-    StringLabel:
-        text: 'Additional parameters'
-        hint_text: '<separated by space>'
-        settings_name: 'arma_additionalParameters'
 
 
     Label:

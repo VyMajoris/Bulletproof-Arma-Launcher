@@ -78,22 +78,21 @@ class Settings(Model):
         {'name': 'max_download_speed', 'defaultValue': 0},
         {'name': 'seeding_type', 'defaultValue': 'while_not_playing'},
         {'name': 'selected_server', 'defaultValue': False},
-        {'name': 'run_trackir', 'defaultValue': True},
-        {'name': 'run_opentrack', 'defaultValue': True},
         {'name': 'launch_connect_teamspeak', 'defaultValue': True},
         {'name': 'connect_to_server_on_launch', 'defaultValue': True},
-        {'name': 'run_facetracknoir', 'defaultValue': True},
         {'name': 'selected_optional_mods', 'defaultValue': []},
         {'name': 'last_custom_background', 'defaultValue': None},
         {'name': 'auth_login', 'defaultValue': ''},
         {'name': 'auth_password', 'defaultValue': ''},
 
         # Arma launching parameters ############################################
-        {'name': 'arma_win32', 'defaultValue': False},
-        {'name': 'arma_win64', 'defaultValue': False},
+        {'name': 'arma_execMode', 'defaultValue': 'Auto Detect'},
+        {'name': 'arma_allocator', 'defaultValue': 'Auto'},
         {'name': 'arma_name', 'defaultValue': ''},
         {'name': 'arma_name_enabled', 'defaultValue': False},
         {'name': 'arma_showScriptErrors', 'defaultValue': False},
+        {'name': 'arma_noLogs', 'defaultValue': False},
+        {'name': 'arma_enableHT', 'defaultValue': False},
         {'name': 'arma_noPause', 'defaultValue': True},
         {'name': 'arma_window', 'defaultValue': False},
         {'name': 'arma_checkSignatures', 'defaultValue': False},
@@ -106,7 +105,12 @@ class Settings(Model):
         {'name': 'arma_exThreads_enabled', 'defaultValue': False},
         {'name': 'arma_noSound', 'defaultValue': False},
         {'name': 'arma_hugePages', 'defaultValue': False},
+        {'name': 'arma_additionalParameters_enabled', 'defaultValue': False},
         {'name': 'arma_additionalParameters', 'defaultValue': ''},
+        
+        # Non Arma setting parameters ##########################################
+        {'name': 'arma_trackProgram_enabled', 'defaultValue': False},
+        {'name': 'arma_trackProgram', 'defaultValue': 'TrackIR'},
     ]
 
     # path to the registry entry which holds the users document path

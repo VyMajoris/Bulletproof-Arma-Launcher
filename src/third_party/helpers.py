@@ -302,11 +302,14 @@ def create_game_parameters():
     settings = kivy.app.App.get_running_app().settings
     args = []
 
-    if settings.get('arma_win64'):
-        args.append('-win64')
+    if settings.get('arma_execMode') != 'Auto':
+        if settings.get('arma_execMode') == '64bit':
+            args.append('-win64')
+        elif settings.get('arma_execMode') == '32bit':
+            args.append('-win32')
 
-    if settings.get('arma_win32'):
-        args.append('-win32')
+    if settings.get('arma_allocator') and (settings.get('arma_allocator') != 'auto'):
+        args.append('-malloc=' + settings.get('arma_allocator'))
 
     if settings.get('arma_name') and settings.get('arma_name_enabled'):
         args.append('-name=' + settings.get('arma_name'))
@@ -316,6 +319,12 @@ def create_game_parameters():
 
     if settings.get('arma_noPause'):
         args.append('-noPause')
+    
+    if settings.get('arma_noLogs'):
+        args.append('-noLogs')
+    
+    if settings.get('arma_enableHT'):
+        args.append('-enableHT')
 
     if settings.get('arma_window'):
         args.append('-window')
@@ -335,7 +344,7 @@ def create_game_parameters():
     if settings.get('arma_hugePages'):
         args.append('-hugepages')
 
-    if settings.get('arma_additionalParameters'):
+    if settings.get('arma_additionalParameters') and settings.get('arma_additionalParameters_enabled'):
         args.extend(shlex.split(settings.get('arma_additionalParameters')))
 
     return args
@@ -385,18 +394,18 @@ def run_the_game(mods, ip=None, port=None, password=None, teamspeak_urls=None, b
                     teamspeak.run_and_connect(teamspeak_urls)
     else:
         Logger.info('Third party: Not running teamspeak because of devmode settings.')
-
-    if settings.get('run_facetracknoir'):
-        Logger.info('Third party: Trying to run FaceTrackNoIR...')
-        headtracking.run_faceTrackNoIR()
-
-    if settings.get('run_trackir'):
-        Logger.info('Third party: Trying to run TrackIR...')
-        headtracking.run_TrackIR()
-
-    if settings.get('run_opentrack'):
-        Logger.info('Third party: Trying to run Opentrack...')
-        headtracking.run_opentrack()
+        
+    if settings.get('arma_trackProgram_enabled'):
+        tracker_program = settings.get('arma_trackProgram')
+        if tracker_program == 'TrackIR':
+            Logger.info('Third party: Trying to run TrackIR...')
+            headtracking.run_TrackIR()
+        elif tracker_program == 'Opentrack':
+            Logger.info('Third party: Trying to run Opentrack...')
+            headtracking.run_opentrack()
+        elif tracker_program == 'FreeTrackNoIR':
+            Logger.info('Third party: Trying to run FaceTrackNoIR...')
+            headtracking.run_faceTrackNoIR()
 
     Logger.info('Third party: Running the game')
     try:

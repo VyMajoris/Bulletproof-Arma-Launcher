@@ -52,7 +52,7 @@ class ServerListEntry(BoxLayout):
             self.ids.server_name.text = server.name
 
         else:
-            self.ids.server_name.text = 'No server, just run Arma'
+            self.ids.server_name.text = 'Vanilla ArmA'
 
         if self.server.selected:
             self.select()
@@ -154,7 +154,7 @@ class ServerListScrolled(ScrollView, HoverBehavior):
             self.server_widgets.append(server_entry)
             self.ids.servers_list.add_widget(server_entry)
 
-        # Add the "just run Arma" entry
+        # Add the "Vanilla ArmA" entry
         dummy_server = Server(None, None, None)
         dummy_server.selected = not any(s.selected for s in  self.servers)
         dummy_server_entry = ServerListEntry(self, dummy_server)
